@@ -146,6 +146,10 @@ pyinstaller --onefile panargs.py
 ```
 The `.exe` file will be located in the `dist/` folder.
 
+## Contributions
+
+[Fusily](https://github.com/Fusily) helped me check the grammar errors in this README document.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
