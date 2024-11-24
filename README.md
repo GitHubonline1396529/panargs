@@ -5,8 +5,8 @@ author: Githubonline_1396529
 toc: true
 numbersections: true
 pandoc_args:
-  output: README.pdf
-  shift_heading_level_by: -1
+  - output=README.pdf
+  - shift-heading-level-by=-1
 ---
 
 # Panargs.py: Minimal CLI Argument Specific for Pandoc Markdown YAML
