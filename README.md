@@ -5,6 +5,7 @@ author: Githubonline_1396529
 toc: true
 numbersections: true
 pandoc_args:
+  pdf_engine: xelatex
   output: README.pdf
   shift_heading_level_by: -1
 ---
@@ -148,7 +149,7 @@ The `.exe` file will be located in the `dist/` folder.
 
 ## Contributions
 
-[Fusily](https://github.com/Fusily) helped me check the grammar errors in this README document.
+[Fusily](https://github.com/Fusily) helped me correct eight English grammar errors in this README document.
 
 ## License
 
