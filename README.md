@@ -2,10 +2,11 @@
 documentclass: article
 classoption: 11pt, a4paper
 author: Githubonline_1396529
+date: May 27th, 2025
 toc: true
 numbersections: true
+colorlinks: true
 pandoc_args:
-  pdf_engine: xelatex
   output: README.pdf
   shift_heading_level_by: -1
 ---
@@ -139,12 +140,26 @@ To verify the script, create test Markdown files with various `pandoc_args` conf
 
 ### Packaging as `.exe` (Optional)
 
-Use `PyInstaller` to package the script into a standalone executable:
+You can use `PyInstaller` to package the script into a standalone executable.
+
+I suggest you to pack the file in a virtual environment. Create one with `venv` module with the following command:
+
+```bash
+python -m venv .venv
+```
+
+Then activate the virtual environment. Usually,
+
+- For Windows users: `.\.venv\Scripts\activate.bat`;
+- For Mac/Linux: `source .venv/bin/activate`.
+
+Then run pyinstaller to package the script,
 
 ```bash
 pip install pyinstaller
 pyinstaller --onefile panargs.py
 ```
+
 The `.exe` file will be located in the `dist/` folder.
 
 ## Contributions
