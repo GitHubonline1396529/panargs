@@ -1,0 +1,18 @@
+# .gitignore file
+# 
+# The .gitignore file for panargs.py project. Ignored some workspace folders
+# and python build files.
+#
+# Date: 2025-5-27
+# License: MIT Copyright (c) Githubonline1396529 <yyg249942899@163.com>
+# Version: 0.1.0.2
+
+# No workspace folders.
+.venv 
+.vscode
+
+# No build file include.
+build
+dist
+*.exe
+panargs.spec
