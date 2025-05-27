@@ -4,7 +4,7 @@ panargs.py
 
 Author: ChatGPT =), Githubonline1396529
 License: Copyright (c) 2024 Githubonline1396529
-Version: 0.1.1.3
+Version: 0.1.1.4
 
 This script exports Markdown files to various formats using Pandoc, incorporat-
 ing options specified in the YAML front matter (`pandoc_args`) and additional
@@ -168,7 +168,7 @@ def main():
     parser = argparse.ArgumentParser(
         description=(
             "Export Markdown using Pandoc with options from YAML and CLI."
-            )
+        )
     )
     parser.add_argument(
         "markdown_file", type=str, help="Path to the Markdown file."
