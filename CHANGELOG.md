@@ -9,3 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - Initialize Github Actions.
+
+## [0.1.1.5] - 2025-07-26
+
+### Added
+
+- Added a new `-v, --version` argument to display version info.
