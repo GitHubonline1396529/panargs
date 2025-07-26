@@ -29,7 +29,6 @@ jobs:
 
       - name: Build executable
         run: |
-          source .venv/bin/activate || .venv\Scripts\activate
           pyinstaller --onefile panargs.py
 
       - name: Upload artifact
