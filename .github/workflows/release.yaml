@@ -1,0 +1,66 @@
+
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'   # Only activated with new version such as v1.0.0
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate || .venv\Scripts\activate
+          pip install --upgrade pip
+          pip install pyinstaller
+
+      - name: Build executable
+        run: |
+          source .venv/bin/activate || .venv\Scripts\activate
+          pyinstaller --onefile panargs.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: myapp-${{ matrix.os }}
+          path: dist/panargs*
+  
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./dist
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/**/*
