@@ -1,44 +1,52 @@
+
 name: Build and Release
 
 on:
   push:
     tags:
-      - 'v*'   # Only activated with new version such as v1.0.0
+      - "v*"   # 只有推送 v 开头的 tag 时才触发，比如 v1.0.0
 
 permissions:
-  contents: write
+  contents: write  # 允许创建/修改 Release
 
 jobs:
   build:
-    name: Build ${{ matrix.os }}
+    name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install pyinstaller
 
       - name: Build executable
-        run: |
-          pyinstaller --onefile panargs.py
+        run: pyinstaller --onefile panargs.py
 
-      - name: Upload artifact
+      - name: Rename build artifacts
+        run: |
+          mkdir upload
+          if [ "$RUNNER_OS" = "Windows" ]; then cp dist/panargs.exe upload/panargs-windows.exe;
+          elif [ "$RUNNER_OS" = "macOS" ]; then cp dist/panargs upload/panargs-macos;
+          else cp dist/panargs upload/panargs-linux; fi
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: myapp-${{ matrix.os }}
-          path: dist/panargs*
-  
+          name: build-${{ matrix.os }}
+          path: upload/*
+
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -48,18 +56,21 @@ jobs:
         with:
           path: ./dist
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
+      - name: Generate changelog from commits
+        id: changelog
+        run: |
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          git log --pretty=format:'- %s' $(git describe --tags --abbrev=0 @^)..@ >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Upload Release Assets
+      - name: Upload to Release (create if not exists)
         uses: softprops/action-gh-release@v2
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            ## Changes
+            ${{ steps.changelog.outputs.changelog }}
           files: dist/**/*
+
