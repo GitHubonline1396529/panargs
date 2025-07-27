@@ -55,7 +55,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
-        shell: bash
         uses: actions/download-artifact@v4
         with:
           path: ./dist
