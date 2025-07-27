@@ -65,13 +65,10 @@ jobs:
           path: ./dist
 
       - name: Generate changelog from commits
-        id: changelog
-        run: |
-          git log --pretty=format:'- %s' $(git describe --tags --abbrev=0 @^)..@ > tmp_changelog.txt
-          echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          cat tmp_changelog.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
         shell: bash
+        run: |
+          git log --pretty=format:'- %s' $(git describe --tags --abbrev=0 @^)..@ > changelog.txt
+
 
       - name: Upload to Release (create if not exists)
         uses: softprops/action-gh-release@v2
