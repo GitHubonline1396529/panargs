@@ -57,7 +57,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Must pull complete commit message.
+          fetch-depth: 0  # Must fetch complete commit message.
 
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -65,12 +65,13 @@ jobs:
           path: ./dist
 
       - name: Generate changelog from commits
-        shell: bash
         id: changelog
         run: |
-          echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          git log --pretty=format:'- %s' $(git describe --tags --abbrev=0 @^)..@ >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          {
+            echo 'changelog<<EOF'
+            git log --pretty=format:'- %s' $(git describe --tags --abbrev=0 @^)..@
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
 
       - name: Upload to Release (create if not exists)
         uses: softprops/action-gh-release@v2
