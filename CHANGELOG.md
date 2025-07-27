@@ -15,3 +15,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ### Added
 
 - Added a new `-v, --version` argument to display version info.
+- Debug the GitHub Action workflow.
