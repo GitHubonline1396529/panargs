@@ -45,7 +45,6 @@ jobs:
           else cp dist/panargs upload/panargs-linux; fi
 
       - name: Upload artifacts
-        shell: bash
         uses: actions/upload-artifact@v4
         with:
           name: build-${{ matrix.os }}
